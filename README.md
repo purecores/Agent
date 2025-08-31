@@ -12,7 +12,7 @@ git add .
 
 修改分支名称
 ```bash
-git branch -m "new-branch-name"
+git branch -m ""
 ```
 
 使用 rebase 策略合并代码
@@ -22,7 +22,7 @@ git pull --rebase origin main
 
 提交 commit 信息
 ```bash
-git commit -m "commit message"
+git commit -m ""
 ```
 
 推送至远程仓库
