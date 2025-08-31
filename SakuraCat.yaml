@@ -1,0 +1,327 @@
+proxy-providers:
+  SakuraCat:
+    url: "https://d2f42a86-2a1f-49b5-bd2f-d2154daa6a09.com/api/v1/client/subscribe?token=8eba1de2bd6133c66817c6fba931ce68"
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: DIRECT
+
+port: 8080
+socks-port: 1080
+redir-port: 7891
+tproxy-port: 7892
+mixed-port: 7890
+log-level: error
+mode: rule
+ipv6: true
+allow-lan: true
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: off
+global-client-fingerprint: chrome
+
+external-controller: "[::]:9090"
+external-ui: "ui"
+external-ui-name: Zashboard
+external-ui-url: "https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip"
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+sniffer:
+  enable: false
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "+.push.apple.com"
+
+tun:
+  enable: true
+  stack: gVisor
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: false
+  auto-redirect: false
+  auto-detect-interface: false
+  device: nikki
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  fake-ip-filter:
+    - "+.lan"
+    - "+.local"
+    - "+.ipip.net"
+    - "+.micu.hk"
+    - "+.netcut.cn"
+    - "+.cczu.edu.cn"
+    - "+.chaoxing.com"
+    - "+.ithome.com"
+    - "+.bilibili.com"
+    - "+.qq.com"
+    - "+.douyin.com"
+    - "+.apple.com"
+    - "+.jsdelivr.net"
+    - "+.xiaomi.com"
+    - "+.taobao.com"
+    - "*.mmstat.com"
+  default-nameserver:
+    - tls://223.5.5.5
+    - tls://223.6.6.6
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  listen: "[::]:1053"
+  fake-ip-range: 198.18.0.1/16
+
+proxy-groups:
+  - name: Default
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Final.png
+    type: select
+    proxies: [HK-TW, JP-SGP, US, EU, DIRECT]
+
+  - name: Match
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Available.png
+    type: select
+    proxies: [DIRECT, HK-TW, JP-SGP, US, EU]
+
+  - name: HK-TW
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png
+    type: url-test
+    url: "https://www.gstatic.com/generate_204"
+    interval: 120
+    tolerance: 50
+    lazy: true
+    include-all: true
+    filter: "(?!.*家宽)(?=.*IEPL)(?=.*(?:香港|台湾))"
+
+  - name: JP-SGP
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Japan.png
+    type: url-test
+    url: "https://www.gstatic.com/generate_204"
+    interval: 120
+    tolerance: 50
+    lazy: true
+    include-all: true
+    filter: "(?!.*家宽)(?=.*IEPL)(?=.*(?:日本|新加坡))"
+
+  - name: US
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_States.png
+    type: url-test
+    url: "https://www.gstatic.com/generate_204"
+    interval: 120
+    tolerance: 50
+    lazy: true
+    include-all: true
+    filter: "(?!.*家宽)(?=.*IEPL)(?=.*美国)"
+
+  - name: EU
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/European_Union.png
+    type: select
+    include-all: true
+    filter: "(?!.*家宽)(?=.*IEPL)(?=.*(?:韩国|英国|法国|意大利|澳洲))"
+
+  - name: Anti
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Adblock.png
+    type: select
+    proxies: [REJECT, DIRECT]
+
+  - name: Ai
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
+    type: select
+    proxies: [JP-SGP, US, EU, HK-TW, DIRECT]
+
+  - name: Microsoft
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png
+    type: select
+    proxies: [DIRECT, HK-TW, JP-SGP]
+
+  - name: Steam
+    icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Steam.png
+    type: select
+    proxies: [HK-TW, JP-SGP, US, EU, DIRECT]
+
+rules:
+  - DOMAIN-SUFFIX,ipip.net,DIRECT
+  - DOMAIN-SUFFIX,micu.hk,DIRECT
+  - DOMAIN-SUFFIX,ghxi.com,DIRECT
+  - DOMAIN-SUFFIX,netcut.cn,DIRECT
+  - DOMAIN-SUFFIX,cczu.edu.cn,DIRECT
+  - DOMAIN-SUFFIX,chaoxing.com,DIRECT
+  - DOMAIN-SUFFIX,ithome.com,DIRECT
+  - DOMAIN-SUFFIX,qq.com,DIRECT
+  - DOMAIN-SUFFIX,douyin.com,DIRECT
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,apple.com,DIRECT
+  - DOMAIN-SUFFIX,xiaomi.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,jsdelivr.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,DIRECT
+  - DOMAIN-SUFFIX,mmstat.com,DIRECT
+  - DOMAIN-SUFFIX,3767483.xyz,DIRECT
+  - DOMAIN-SUFFIX,speech.platform.bing.com,DIRECT
+
+  - DOMAIN-SUFFIX,ip.sb,Default
+  - DOMAIN-SUFFIX,hongxingyunmovie.vip,Default
+  - DOMAIN-SUFFIX,candytallymovie.vip,Default
+  - DOMAIN-SUFFIX,notebooklm.google,Default
+  - DOMAIN-SUFFIX,acgbox.link,Default
+  - DOMAIN-SUFFIX,hanime1.me,Default
+  - DOMAIN-SUFFIX,69shuba.com,Default
+  - DOMAIN-SUFFIX,haikuoshijie.cn,Default
+  - DOMAIN-SUFFIX,ajianpingce.com,Default
+  - DOMAIN-SUFFIX,trxs.me,Default
+  - DOMAIN-SUFFIX,echoir-api.pio.us.eu.org,Default
+
+  - RULE-SET,private_ip,DIRECT,no-resolve
+
+  - RULE-SET,anti_ad_domain,Anti
+  - RULE-SET,mihoyo_cn_domain,DIRECT
+  - RULE-SET,games_cn_domain,DIRECT
+
+  - RULE-SET,ai_domain,Ai
+  - RULE-SET,github_domain,Default
+  - RULE-SET,telegram_domain,Default
+  - RULE-SET,pixiv_domain,Default
+  - RULE-SET,google_domain,Default
+
+  - RULE-SET,jsdelivr_domain,DIRECT
+  - RULE-SET,apple_cn_domain,DIRECT
+  - RULE-SET,bilibili_domain,DIRECT
+  - RULE-SET,bytedance_domain,DIRECT
+  - RULE-SET,tencent_domain,DIRECT
+  - RULE-SET,jd_domain,DIRECT
+  - RULE-SET,alibaba_domain,DIRECT
+
+  - RULE-SET,xiaomi_domain,DIRECT
+  - RULE-SET,oppo_domain,DIRECT
+  - RULE-SET,baidu_domain,DIRECT
+  - RULE-SET,lanzou_domain,DIRECT
+
+  - RULE-SET,steam_domain,Steam
+  - RULE-SET,microsoft_domain,Microsoft
+
+  - RULE-SET,telegram_ip,Default,no-resolve
+  - RULE-SET,google_ip,Default,no-resolve
+
+  - RULE-SET,geolocation-!cn,Default
+  - RULE-SET,cn_domain,DIRECT
+  - RULE-SET,cn_ip,DIRECT,no-resolve
+  - MATCH,Match
+
+rule-anchor:
+  ip: &ip
+    type: http
+    interval: 86400
+    behavior: ipcidr
+    format: mrs
+  domain: &domain
+    type: http
+    interval: 86400
+    behavior: domain
+    format: mrs
+  class: &class
+    type: http
+    interval: 86400
+    behavior: domain
+    format: yaml
+rule-providers:
+  anti_ad_domain:
+    <<: *domain
+    url: "https://anti-ad.net/mihomo.mrs"
+  mihoyo_cn_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/mihoyo-cn.mrs"
+  games_cn_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games-cn.mrs"
+
+  ai_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs"
+  github_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs"
+  telegram_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs"
+  pixiv_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/pixiv.mrs"
+  google_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs"
+
+  jsdelivr_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/jsdelivr.mrs"
+  apple_cn_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple-cn.mrs"
+
+  bilibili_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bilibili.mrs"
+  bytedance_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/bytedance.mrs"
+  tencent_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tencent.mrs"
+  jd_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/jd.mrs"
+  alibaba_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/alibaba.mrs"
+
+  xiaomi_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/xiaomi.mrs"
+  oppo_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/oppo.mrs"
+  baidu_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/baidu.mrs"
+  lanzou_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/lanzou.mrs"
+
+  steam_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.mrs"
+  microsoft_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs"
+
+  geolocation-!cn:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.mrs"
+  cn_domain:
+    <<: *domain
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs"
+
+  private_ip:
+    <<: *ip
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/private.mrs"
+  google_ip:
+    <<: *ip
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs"
+  telegram_ip:
+    <<: *ip
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs"
+  cn_ip:
+    <<: *ip
+    url: "https://cdn.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs"

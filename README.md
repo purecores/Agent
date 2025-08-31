@@ -1,0 +1,1 @@
+For private use only. Unauthorized use or distribution is strictly prohibited.
