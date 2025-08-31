@@ -3,7 +3,7 @@ config status 'status'
 
 config config 'config'
 	option enabled '1'
-	option profile 'file:nikki.yaml'
+	option profile 'subscription:cfg170caa'
 	option start_delay '20'
 	option scheduled_restart '1'
 	option cron_expression '0 4 * * *'
@@ -216,4 +216,12 @@ config routing 'routing'
 config editor 'editor'
 
 config log 'log'
+
+config subscription
+	option name 'SakuraCat'
+	option url 'https://cdn.jsdelivr.net/gh/purecores/Agent@main/SakuraCat.yaml'
+	option user_agent 'clash'
+	option prefer 'remote'
+	option update '2025-08-31 19:15:01'
+	option success '1'
 
