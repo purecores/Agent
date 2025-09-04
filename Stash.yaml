@@ -85,11 +85,6 @@ proxy-groups:
     include-all: true
     filter: "(?!.*家宽)(?=.*IEPL)(?=.*(?:韩国|英国|法国|意大利|澳洲))"
 
-  - name: Anti
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Adblock.png
-    type: select
-    proxies: [REJECT, DIRECT]
-
   - name: Ai
     icon: https://cdn.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
