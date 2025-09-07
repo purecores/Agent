@@ -219,9 +219,9 @@ config log 'log'
 
 config subscription
 	option name 'SakuraCat'
-	option url 'https://cdn.jsdelivr.net/gh/purecores/Agent@main/SakuraCat.yaml'
+	option url 'https://raw.githubusercontent.com/purecores/Agent/main/SakuraCat.yaml'
 	option user_agent 'clash'
 	option prefer 'remote'
-	option update '2025-08-31 19:15:01'
+	option update '2025-09-07 22:09:37'
 	option success '1'
 
