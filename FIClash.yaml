@@ -124,6 +124,7 @@ rules:
   - DOMAIN-SUFFIX,haikuoshijie.cn,Default
   - DOMAIN-SUFFIX,ajianpingce.com,Default
   - DOMAIN-SUFFIX,trxs.me,Default
+  - DOMAIN-SUFFIX,scribd.com,Default
   - DOMAIN-SUFFIX,echoir-api.pio.us.eu.org,Default
 
   - RULE-SET,private_ip,DIRECT,no-resolve
